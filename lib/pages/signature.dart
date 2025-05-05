@@ -1,3 +1,4 @@
+import 'package:deliveryboyapp/pages/ManageVehicleScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
 
@@ -81,7 +82,7 @@ class _SignatureScreenState extends State<SignatureScreen> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Handle submit logic here
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ManageVehicleScreen()));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,

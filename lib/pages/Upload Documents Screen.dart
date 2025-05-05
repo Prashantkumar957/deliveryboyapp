@@ -1,3 +1,5 @@
+import 'package:deliveryboyapp/pages/ManageVehicleScreen.dart';
+import 'package:deliveryboyapp/pages/signature.dart';
 import 'package:flutter/material.dart';
 
 class UploadDocumentsScreen extends StatelessWidget {
@@ -18,8 +20,8 @@ class UploadDocumentsScreen extends StatelessWidget {
             SizedBox(height: 24),
             Center(
               child: Image.asset(
-                'assets/cloud_upload.png', // Replace with your illustration asset
-                height: 100,
+                'assets/cloud_upload.jpeg', // Replace with your illustration asset
+                height: 300,
               ),
             ),
             SizedBox(height: 24),
@@ -84,7 +86,7 @@ class UploadDocumentsScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle submit
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignatureScreen()));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
@@ -95,7 +97,7 @@ class UploadDocumentsScreen extends StatelessWidget {
                 ),
                 child: Text(
                   'Submit for review',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16,color: Colors.white),
                 ),
               ),
             ),
