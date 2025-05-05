@@ -1,3 +1,5 @@
+import 'package:deliveryboyapp/pages/ManageVehicleScreen.dart';
+import 'package:deliveryboyapp/pages/Upload%20Documents%20Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:deliveryboyapp/pages/signature.dart';
 
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: SignatureScreen(), // <-- Widget here
+      home: UploadDocumentsScreen(), // <-- Widget here
     );
   }
 }
