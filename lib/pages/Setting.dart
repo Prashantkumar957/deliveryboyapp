@@ -24,14 +24,14 @@ class SettingsScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 32,
-                  backgroundImage: AssetImage('assets/profile.jpg'), // Replace with your asset
+                  backgroundImage: AssetImage('assets/dek.jpeg'), // Replace with your asset
                 ),
                 SizedBox(width: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Name', style: TextStyle(color: Colors.grey, fontSize: 14)),
-                    Text('Jack Dorsey', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text('Rahul Sharma', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   ],
                 ),
               ],
@@ -40,12 +40,12 @@ class SettingsScreen extends StatelessWidget {
             // Phone Number
             Text('Phone Number', style: TextStyle(color: Colors.grey, fontSize: 14)),
             SizedBox(height: 2),
-            Text('+1 321-412-0144', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Text('+91 321-412-0144', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(height: 24),
             // Email
             Text('Email', style: TextStyle(color: Colors.grey, fontSize: 14)),
             SizedBox(height: 2),
-            Text('jack@gmai.com', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Text('rahul@gmai.com', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(height: 24),
             // City with edit icon
             Row(

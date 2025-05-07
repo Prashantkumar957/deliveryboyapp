@@ -1,3 +1,4 @@
+import 'package:deliveryboyapp/pages/HomeScreen.dart';
 import 'package:deliveryboyapp/pages/ManageVehicleScreen.dart';
 import 'package:deliveryboyapp/pages/OrderTrackingScreen.dart';
 import 'package:deliveryboyapp/pages/Upload%20Documents%20Screen.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: OrderTrackingScreen(), // <-- Widget here
+      home: HomeScreen(), // <-- Widget here
     );
   }
 }
