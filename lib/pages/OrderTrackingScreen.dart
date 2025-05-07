@@ -1,3 +1,4 @@
+import 'package:deliveryboyapp/pages/MyOrdersScreen.dart';
 import 'package:flutter/material.dart';
 
 class OrderTrackingScreen extends StatelessWidget {
@@ -55,15 +56,15 @@ class OrderTrackingScreen extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 30,
-                          backgroundImage: AssetImage('assets/driver.jpg'), // Replace with your asset
+                          backgroundImage: AssetImage('assets/dek.jpeg'), // Replace with your asset
                         ),
                         SizedBox(width: 16),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Jack Dorsey', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                              Text('Lorem ipsum dolor sit amet,', style: TextStyle(color: Colors.grey)),
+                              Text('Rahul  Sharma', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                              Text('Your Deliver Boy,', style: TextStyle(color: Colors.grey)),
                               SizedBox(height: 4),
                               Text('25 MINS AWAY', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
                             ],
@@ -142,9 +143,12 @@ class OrderTrackingScreen extends StatelessWidget {
                 SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyOrdersScreen()));
+
+                    },
                     icon: Icon(Icons.phone, color: Colors.white),
-                    label: Text('TALK'),
+                    label: Text('TALK',style: TextStyle(color: Colors.white),),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                       padding: EdgeInsets.symmetric(vertical: 16),

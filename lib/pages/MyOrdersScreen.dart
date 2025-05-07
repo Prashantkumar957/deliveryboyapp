@@ -21,10 +21,10 @@ class MyOrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[200], // Grey background
       appBar: AppBar(
         title: Text('My Orders', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[200],
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.black),
       ),
@@ -51,6 +51,7 @@ class MyOrdersScreen extends StatelessWidget {
                 itemBuilder: (context, idx) {
                   final order = orders[idx];
                   return Card(
+                    color: Colors.white, // White card background
                     margin: EdgeInsets.only(bottom: 16),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     elevation: 2,
@@ -61,15 +62,15 @@ class MyOrdersScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Text('Order # ${order['id']}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                              Text('Order # ${order['id']}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                               Spacer(),
-                              Text(order['date'] ?? '', style: TextStyle(color: Colors.grey[600], fontSize: 13)),
+                              Text(order['date'] ?? '', style: TextStyle(color: Colors.grey[600], fontSize: 15)),
                             ],
                           ),
                           SizedBox(height: 8),
-                          Text('Delivery Location: ${order['deliveryLocation']}', style: TextStyle(color: Colors.grey[700])),
-                          Text('Delivery time: ${order['deliveryTime']}', style: TextStyle(color: Colors.grey[700])),
-                          Text('Pickup location: ${order['pickupLocation']}', style: TextStyle(color: Colors.grey[700])),
+                          Text('Delivery Location: ${order['deliveryLocation']}', style: TextStyle(color: Colors.grey)),
+                          Text('Delivery time: ${order['deliveryTime']}', style: TextStyle(color: Colors.grey)),
+                          Text('Pickup location: ${order['pickupLocation']}', style: TextStyle(color: Colors.grey)),
                           SizedBox(height: 12),
                           Row(
                             children: [
@@ -80,7 +81,7 @@ class MyOrdersScreen extends StatelessWidget {
                                     backgroundColor: Colors.green,
                                     padding: EdgeInsets.symmetric(vertical: 10),
                                   ),
-                                  child: Text('Accept'),
+                                  child: Text('Accept', style: TextStyle(color: Colors.white)),
                                 ),
                               ),
                               SizedBox(width: 8),
@@ -91,7 +92,7 @@ class MyOrdersScreen extends StatelessWidget {
                                     backgroundColor: Colors.red,
                                     padding: EdgeInsets.symmetric(vertical: 10),
                                   ),
-                                  child: Text('Reject'),
+                                  child: Text('Reject', style: TextStyle(color: Colors.white)),
                                 ),
                               ),
                               SizedBox(width: 8),
