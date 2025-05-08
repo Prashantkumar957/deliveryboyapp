@@ -1,64 +1,60 @@
 import 'package:flutter/material.dart';
 
 class OrderDetailScreen extends StatelessWidget {
+  final Color backgroundColor = Colors.white; // Change this to test dark backgrounds
+
   @override
   Widget build(BuildContext context) {
+    bool isDarkBackground = backgroundColor.computeLuminance() < 0.5;
+    Color textColor = isDarkBackground ? Colors.white : Colors.black;
+    Color subTextColor = isDarkBackground ? Colors.white70 : Colors.grey[700]!;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        leading: BackButton(color: Colors.black),
-        backgroundColor: Colors.white,
+        leading: BackButton(color: textColor),
+        backgroundColor: backgroundColor,
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert, color: Colors.black),
+            icon: Icon(Icons.more_vert, color: textColor),
             onPressed: () {},
           ),
         ],
       ),
-
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 20),
         children: [
-          // Profile Row
           Row(
             children: [
               CircleAvatar(
                 radius: 32,
-                backgroundImage: AssetImage('assets/profile.jpg'), // Replace with your asset
+                backgroundImage: AssetImage('assets/dek.jpeg'),
               ),
               SizedBox(width: 16),
               Text(
-                'Sarah Joseph',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                'Rahul Sharma',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: textColor),
               ),
             ],
           ),
           SizedBox(height: 18),
-          // Contact Info
           Row(
             children: [
-              Icon(Icons.phone, color: Colors.black54, size: 20),
+              Icon(Icons.phone, color: subTextColor, size: 20),
               SizedBox(width: 8),
-              Text(
-                '+91 321-212-0544',
-                style: TextStyle(color: Colors.grey[600], fontSize: 15),
-              ),
+              Text('+91 98765-43210', style: TextStyle(color: subTextColor, fontSize: 15)),
             ],
           ),
           SizedBox(height: 6),
           Row(
             children: [
-              Icon(Icons.email, color: Colors.black54, size: 20),
+              Icon(Icons.email, color: subTextColor, size: 20),
               SizedBox(width: 8),
-              Text(
-                'prashant.phillips@gmail.com',
-                style: TextStyle(color: Colors.grey[600], fontSize: 15),
-              ),
+              Text('amit.sharma@email.com', style: TextStyle(color: subTextColor, fontSize: 15)),
             ],
           ),
           SizedBox(height: 16),
-          // Contact Buttons
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -70,7 +66,6 @@ class OrderDetailScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 16),
-          // Accept/Reject Buttons
           Row(
             children: [
               Expanded(
@@ -81,7 +76,7 @@ class OrderDetailScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
-                  child: Text('Accept'),
+                  child: Text('Accept',style: TextStyle(color: Colors.white),),
                 ),
               ),
               SizedBox(width: 12),
@@ -93,35 +88,34 @@ class OrderDetailScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
-                  child: Text('Reject'),
+                  child: Text('Reject',style: TextStyle(color: Colors.white),),
                 ),
               ),
             ],
           ),
           SizedBox(height: 28),
-          // Pickup Information
-          Text('Pickup Information', style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold)),
+          Text('Pickup Information', style: TextStyle(color: subTextColor, fontWeight: FontWeight.bold)),
           SizedBox(height: 6),
           _infoRow(
-            title: 'Target Store',
-            phone: '+91 347-272-0544',
-            email: 'prashant@gmail.com',
-            address: '150 Broadway, New York, NY 10038, United States',
+            title: 'Big Bazaar, Sector 18',
+            phone: '+91 98989-87654',
+            email: 'bigbazaar18@store.in',
+            address: 'Plot No. 5, Sector 18, Noida, Uttar Pradesh, India',
             onMapTap: () {},
+            textColor: subTextColor,
           ),
-          Divider(height: 32),
-          // Delivery Information
-          Text('Delivery Information', style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold)),
+          Divider(height: 32, color: subTextColor),
+          Text('Delivery Information', style: TextStyle(color: subTextColor, fontWeight: FontWeight.bold)),
           SizedBox(height: 6),
           _infoRow(
-            title: 'Prashant Joseph',
-            phone: '+91 321-212-0544',
-            email: 'sarah@gmail.com',
-            address: '277 Canal St, New York, NY 10013, United States',
+            title: 'Ravi Kumar',
+            phone: '+91 91234-56789',
+            email: 'ravi.kumar@email.com',
+            address: 'Flat 201, Tower 3, Gaur City, Greater Noida, India',
             onMapTap: () {},
+            textColor: subTextColor,
           ),
-          Divider(height: 32),
-          // Start Navigating Button
+          Divider(height: 32, color: subTextColor),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -131,31 +125,28 @@ class OrderDetailScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
-              child: Text('Start Navigating'),
+              child: Text('Start Navigating',style: TextStyle(color: Colors.white),),
             ),
           ),
           SizedBox(height: 24),
-          // Items
-          Text('Items', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          Text('Items', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: textColor)),
           SizedBox(height: 12),
-          _itemTile('assets/pineapple.png', 'The Swan Vietnam Jasmine Rice', '18gx4', 1),
+          _itemTile('assets/rice.jpg', 'India Gate Basmati Rice', '1kg', 2, subTextColor),
           SizedBox(height: 8),
-          _itemTile('assets/strawberry.png', 'The Swan Vietnam Jasmine Rice', 'Black+M', 1),
+          _itemTile('assets/mango.png', 'Mango', '100g', 1, subTextColor),
           SizedBox(height: 24),
-          // Note
-          Text('Note', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          Text('Note', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: textColor)),
           SizedBox(height: 6),
           Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut ...more',
-            style: TextStyle(color: Colors.black87),
+            'Please deliver between 4PM-6PM and call before arriving.',
+            style: TextStyle(color: subTextColor),
           ),
           SizedBox(height: 24),
-          // Job Total
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Job Total', style: TextStyle(color: Colors.grey[700], fontSize: 15)),
-              Text('\$1,765.50', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+              Text('Job Total', style: TextStyle(color: subTextColor, fontSize: 15)),
+              Text('₹3,250.00', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: textColor)),
             ],
           ),
           SizedBox(height: 32),
@@ -183,17 +174,18 @@ class OrderDetailScreen extends StatelessWidget {
     required String email,
     required String address,
     required VoidCallback onMapTap,
+    required Color textColor,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-        Text(phone, style: TextStyle(color: Colors.grey[700])),
-        Text(email, style: TextStyle(color: Colors.grey[700])),
+        Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: textColor)),
+        Text(phone, style: TextStyle(color: textColor)),
+        Text(email, style: TextStyle(color: textColor)),
         Row(
           children: [
             Expanded(
-              child: Text(address, style: TextStyle(color: Colors.grey[700])),
+              child: Text(address, style: TextStyle(color: textColor)),
             ),
             TextButton(
               onPressed: onMapTap,
@@ -205,7 +197,7 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _itemTile(String imagePath, String name, String size, int quantity) {
+  Widget _itemTile(String imagePath, String name, String size, int quantity, Color textColor) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -215,9 +207,9 @@ class OrderDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('Size: $size', style: TextStyle(color: Colors.grey[700], fontSize: 13)),
-              Text('Quantity: $quantity', style: TextStyle(color: Colors.grey[700], fontSize: 13)),
+              Text(name, style: TextStyle(fontWeight: FontWeight.bold, color: textColor)),
+              Text('Size: $size', style: TextStyle(color: textColor, fontSize: 13)),
+              Text('Quantity: $quantity', style: TextStyle(color: textColor, fontSize: 13)),
             ],
           ),
         ),

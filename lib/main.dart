@@ -1,5 +1,6 @@
 import 'package:deliveryboyapp/pages/HomeScreen.dart';
 import 'package:deliveryboyapp/pages/ManageVehicleScreen.dart';
+import 'package:deliveryboyapp/pages/OnboardingPager.dart';
 import 'package:deliveryboyapp/pages/OrderTrackingScreen.dart';
 import 'package:deliveryboyapp/pages/Upload%20Documents%20Screen.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: HomeScreen(), // <-- Widget here
+      home: OnboardingPager(), // <-- Widget here
     );
   }
 }

@@ -1,91 +1,90 @@
 import 'package:flutter/material.dart';
+import 'EditVehicleForm.dart';
 
 class ManageVehicleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF7F7FA),
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: BackButton(color: Colors.black),
         backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          'Manage Vehicle',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
+        elevation: 1,
+        title: Text('Manage Vehicle', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit, color: Colors.teal),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => EditVehicleForm()));
+            },
           ),
-        ),
+        ],
       ),
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 24),
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 32,
-                  backgroundColor: Colors.grey[200],
-                  backgroundImage: AssetImage('assets/scooter.png'), // Replace with your image asset
-                ),
-                SizedBox(width: 16),
-                Text(
-                  'Add Photo',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 32),
-            _vehicleField('Vehicle Type', 'Bike'),
-            _vehicleField('Manufacture', 'Yamaha'),
-            _vehicleField('Model', 'YB 125Z'),
-            _vehicleField('Year', '2018'),
-            _vehicleField('License Plate', 'AHF-062'),
-            _vehicleField('Color', 'Red'),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _vehicleField(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 18.0),
-      child: Row(
+      body: ListView(
+        padding: EdgeInsets.all(20),
         children: [
-          Expanded(
+          Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 32,
+                    backgroundColor: Colors.grey[200],
+                    backgroundImage: AssetImage('assets/scooter.png'),
+                  ),
+                  SizedBox(width: 18),
+                  Text('Yamaha YB 125Z', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 24),
+          Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 15,
-                  ),
+                ListTile(
+                  leading: Icon(Icons.two_wheeler, color: Colors.teal),
+                  title: Text('Vehicle Type'),
+                  subtitle: Text('Bike'),
                 ),
-                SizedBox(height: 2),
-                Text(
-                  value,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
+                Divider(height: 1),
+                ListTile(
+                  leading: Icon(Icons.precision_manufacturing, color: Colors.blueGrey),
+                  title: Text('Manufacturer'),
+                  subtitle: Text('Yamaha'),
+                ),
+                Divider(height: 1),
+                ListTile(
+                  leading: Icon(Icons.confirmation_number, color: Colors.deepPurple),
+                  title: Text('Model'),
+                  subtitle: Text('YB 125Z'),
+                ),
+                Divider(height: 1),
+                ListTile(
+                  leading: Icon(Icons.calendar_today, color: Colors.orange),
+                  title: Text('Year'),
+                  subtitle: Text('2018'),
+                ),
+                Divider(height: 1),
+                ListTile(
+                  leading: Icon(Icons.credit_card, color: Colors.indigo),
+                  title: Text('License Plate'),
+                  subtitle: Text('AHF-062'),
+                ),
+                Divider(height: 1),
+                ListTile(
+                  leading: Icon(Icons.color_lens, color: Colors.pink),
+                  title: Text('Color'),
+                  subtitle: Text('Red'),
                 ),
               ],
             ),
           ),
-          Icon(Icons.edit, size: 20, color: Colors.grey[700]),
         ],
       ),
     );
