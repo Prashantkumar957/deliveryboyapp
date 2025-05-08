@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 
 class OrderDetailScreen extends StatelessWidget {
-  final Color backgroundColor = Colors.white; // Change this to test dark backgrounds
+  final Color backgroundColor = Colors.white;
+  final Color primaryBlue = Color(0xFF1976D2); // A deep blue
+  final Color lightBlue = Color(0xFFE3F2FD);
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkBackground = backgroundColor.computeLuminance() < 0.5;
-    Color textColor = isDarkBackground ? Colors.white : Colors.black;
-    Color subTextColor = isDarkBackground ? Colors.white70 : Colors.grey[700]!;
+    Color textColor = Colors.black;
+    Color subTextColor = Colors.grey[700]!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        leading: BackButton(color: textColor),
+        leading: BackButton(color: primaryBlue),
         backgroundColor: backgroundColor,
         elevation: 0,
+        title: Text('Order Details', style: TextStyle(color: primaryBlue)),
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert, color: textColor),
+            icon: Icon(Icons.more_vert, color: primaryBlue),
             onPressed: () {},
           ),
         ],
@@ -39,30 +41,17 @@ class OrderDetailScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 18),
-          Row(
-            children: [
-              Icon(Icons.phone, color: subTextColor, size: 20),
-              SizedBox(width: 8),
-              Text('+91 98765-43210', style: TextStyle(color: subTextColor, fontSize: 15)),
-            ],
-          ),
-          SizedBox(height: 6),
-          Row(
-            children: [
-              Icon(Icons.email, color: subTextColor, size: 20),
-              SizedBox(width: 8),
-              Text('amit.sharma@email.com', style: TextStyle(color: subTextColor, fontSize: 15)),
-            ],
-          ),
+          _contactRow(Icons.phone, '+91 98765-43210', subTextColor),
+          _contactRow(Icons.email, 'amit.sharma@email.com', subTextColor),
           SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _circleIconButton(Icons.call, Colors.red, () {}),
+              _circleIconButton(Icons.call, primaryBlue, () {}),
               SizedBox(width: 12),
-              _circleIconButton(Icons.message, Colors.red, () {}),
+              _circleIconButton(Icons.message, primaryBlue, () {}),
               SizedBox(width: 12),
-              _circleIconButton(Icons.camera_alt, Colors.red, () {}),
+              _circleIconButton(Icons.camera_alt, primaryBlue, () {}),
             ],
           ),
           SizedBox(height: 16),
@@ -72,11 +61,11 @@ class OrderDetailScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: primaryBlue,
                     padding: EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
-                  child: Text('Accept',style: TextStyle(color: Colors.white),),
+                  child: Text('Accept'),
                 ),
               ),
               SizedBox(width: 12),
@@ -84,18 +73,17 @@ class OrderDetailScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
+                    backgroundColor: primaryBlue,
                     padding: EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
-                  child: Text('Reject',style: TextStyle(color: Colors.white),),
+                  child: Text('Reject', style: TextStyle(color: Colors.white)),
                 ),
               ),
             ],
           ),
           SizedBox(height: 28),
-          Text('Pickup Information', style: TextStyle(color: subTextColor, fontWeight: FontWeight.bold)),
-          SizedBox(height: 6),
+          _sectionTitle('Pickup Information', primaryBlue),
           _infoRow(
             title: 'Big Bazaar, Sector 18',
             phone: '+91 98989-87654',
@@ -104,9 +92,8 @@ class OrderDetailScreen extends StatelessWidget {
             onMapTap: () {},
             textColor: subTextColor,
           ),
-          Divider(height: 32, color: subTextColor),
-          Text('Delivery Information', style: TextStyle(color: subTextColor, fontWeight: FontWeight.bold)),
-          SizedBox(height: 6),
+          Divider(height: 32, color: Colors.grey.shade300),
+          _sectionTitle('Delivery Information', primaryBlue),
           _infoRow(
             title: 'Ravi Kumar',
             phone: '+91 91234-56789',
@@ -115,27 +102,28 @@ class OrderDetailScreen extends StatelessWidget {
             onMapTap: () {},
             textColor: subTextColor,
           ),
-          Divider(height: 32, color: subTextColor),
+          Divider(height: 32, color: Colors.grey.shade300),
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
+            child: ElevatedButton.icon(
               onPressed: () {},
+              icon: Icon(Icons.navigation, color: Colors.white),
+              label: Text('Start Navigating'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: primaryBlue,
                 padding: EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
-              child: Text('Start Navigating',style: TextStyle(color: Colors.white),),
             ),
           ),
           SizedBox(height: 24),
-          Text('Items', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: textColor)),
+          _sectionTitle('Items', primaryBlue),
           SizedBox(height: 12),
           _itemTile('assets/rice.jpg', 'India Gate Basmati Rice', '1kg', 2, subTextColor),
           SizedBox(height: 8),
           _itemTile('assets/mango.png', 'Mango', '100g', 1, subTextColor),
           SizedBox(height: 24),
-          Text('Note', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: textColor)),
+          _sectionTitle('Note', primaryBlue),
           SizedBox(height: 6),
           Text(
             'Please deliver between 4PM-6PM and call before arriving.',
@@ -146,13 +134,30 @@ class OrderDetailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Job Total', style: TextStyle(color: subTextColor, fontSize: 15)),
-              Text('₹3,250.00', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: textColor)),
+              Text('₹3,250.00', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: primaryBlue)),
             ],
           ),
           SizedBox(height: 32),
         ],
       ),
     );
+  }
+
+  Widget _contactRow(IconData icon, String text, Color color) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          Icon(icon, color: color, size: 20),
+          SizedBox(width: 8),
+          Text(text, style: TextStyle(color: color, fontSize: 15)),
+        ],
+      ),
+    );
+  }
+
+  Widget _sectionTitle(String title, Color color) {
+    return Text(title, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 16));
   }
 
   Widget _circleIconButton(IconData icon, Color color, VoidCallback onTap) {
@@ -189,7 +194,7 @@ class OrderDetailScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: onMapTap,
-              child: Text('Map it', style: TextStyle(color: Colors.red)),
+              child: Text('Map it', style: TextStyle(color: Colors.blue)),
             ),
           ],
         ),
@@ -201,7 +206,10 @@ class OrderDetailScreen extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image.asset(imagePath, width: 48, height: 48, fit: BoxFit.cover),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(imagePath, width: 48, height: 48, fit: BoxFit.cover),
+        ),
         SizedBox(width: 12),
         Expanded(
           child: Column(

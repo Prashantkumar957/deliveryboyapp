@@ -1,3 +1,7 @@
+import 'package:deliveryboyapp/pages/ChatScreen.dart';
+import 'package:deliveryboyapp/pages/EditProfileForm.dart';
+import 'package:deliveryboyapp/pages/EditVehicleForm.dart';
+import 'package:deliveryboyapp/pages/OnboardingPager.dart';
 import 'package:flutter/material.dart';
 import 'ForgotPasswordScreen.dart';
 import 'History.dart';
@@ -17,21 +21,20 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color primaryRed = Color(0xFFCC313D); // Cherry red
-    final Color accentTeal = Color(0xFFA7BEAE); // Muted teal
-    final Color cardBg = Color(0xFFF7F7FA); // Light gray
-    final Color drawerBg = Color(0xFFF3F4F6); // Off-white
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final accentBlue = colorScheme.secondary;
 
     return Scaffold(
       drawer: Drawer(
-        backgroundColor: drawerBg,
+        backgroundColor: colorScheme.background,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [primaryRed, accentTeal],
+                  colors: [colorScheme.primary, accentBlue],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -63,7 +66,7 @@ class HomeScreen extends StatelessWidget {
             _drawerItem(
               icon: Icons.assignment,
               text: 'Manage Orders',
-              color: primaryRed,
+              color: colorScheme.primary,
               onTap: () {
                 Navigator.pop(context);
                 _goTo(context, MyOrdersScreen());
@@ -72,7 +75,7 @@ class HomeScreen extends StatelessWidget {
             _drawerItem(
               icon: Icons.person,
               text: 'Profile',
-              color: accentTeal,
+              color: accentBlue,
               onTap: () {
                 Navigator.pop(context);
                 _goTo(context, SettingsScreen());
@@ -81,7 +84,7 @@ class HomeScreen extends StatelessWidget {
             _drawerItem(
               icon: Icons.logout,
               text: 'Logout',
-              color: Colors.grey[700]!,
+              color: Colors.redAccent,
               onTap: () {
                 Navigator.pop(context);
                 // Add logout logic here
@@ -93,22 +96,17 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.only(left: 20.0, top: 8, bottom: 16),
               child: Text(
                 'v3.39.0',
-                style: TextStyle(color: Colors.grey[400], fontSize: 13),
+                style: TextStyle(color: Colors.grey[500], fontSize: 13),
               ),
             ),
           ],
         ),
       ),
       appBar: AppBar(
-        backgroundColor: cardBg,
-        elevation: 1,
-        iconTheme: IconThemeData(color: primaryRed),
-        title: Text('Home',
-            style: TextStyle(
-                color: primaryRed, fontWeight: FontWeight.bold, fontSize: 22)),
+        title: Text('Home'),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications_none, color: accentTeal),
+            icon: Icon(Icons.notifications_none, color: accentBlue),
             onPressed: () {},
           ),
         ],
@@ -121,28 +119,36 @@ class HomeScreen extends StatelessWidget {
             Text(
               'All Screens',
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 28,
-                  color: primaryRed),
+                fontWeight: FontWeight.bold,
+                fontSize: 28,
+                color: colorScheme.primary,
+                letterSpacing: 1.1,
+              ),
             ),
             SizedBox(height: 24),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
-                childAspectRatio: 1.15,
+                childAspectRatio: 1.12,
                 mainAxisSpacing: 20,
                 crossAxisSpacing: 20,
                 children: [
-                  _homeButton(context, Icons.receipt_long, 'Order Detail', OrderDetailScreen(), primaryRed, cardBg),
-                  _homeButton(context, Icons.login, 'Login', LoginScreen(), accentTeal, cardBg),
-                  _homeButton(context, Icons.history, 'History', HistoryScreen(), Colors.deepPurple, cardBg),
-                  _homeButton(context, Icons.lock_reset, 'Forgot Password', ForgotPasswordScreen(), Colors.orange[700]!, cardBg),
-                  _homeButton(context, Icons.settings, 'Settings', SettingsScreen(), Colors.blueGrey, cardBg),
-                  _homeButton(context, Icons.directions_bike, 'Manage Vehicle', ManageVehicleScreen(), Colors.teal, cardBg),
-                  _homeButton(context, Icons.upload_file, 'Upload Documents', UploadDocumentsScreen(), Colors.indigo, cardBg),
-                  _homeButton(context, Icons.track_changes, 'Order Tracking', OrderTrackingScreen(), Colors.pink[700]!, cardBg),
-                  _homeButton(context, Icons.list_alt, 'My Orders', MyOrdersScreen(), Colors.green[700]!, cardBg),
-                  _homeButton(context, Icons.edit, 'Signature', SignatureScreen(), Colors.brown, cardBg),
+                  // Add these to your GridView.count's children array
+                  _homeButton(context, Icons.edit, 'Edit Profile', EditProfileForm(), Colors.blue, colorScheme.surface),
+                  _homeButton(context, Icons.two_wheeler, 'Edit Vehicle', EditVehicleForm(), Colors.teal, colorScheme.surface),
+                  _homeButton(context, Icons.chat, 'Chat', ChatScreen(), Colors.purple, colorScheme.surface),
+                  _homeButton(context, Icons.tour, 'Onboarding', OnboardingPager(), Colors.indigo, colorScheme.surface),
+
+                  _homeButton(context, Icons.receipt_long, 'Order Detail', OrderDetailScreen(), colorScheme.primary, colorScheme.surface),
+                  _homeButton(context, Icons.login, 'Login', LoginScreen(), accentBlue, colorScheme.surface),
+                  _homeButton(context, Icons.history, 'History', HistoryScreen(), Colors.indigo, colorScheme.surface),
+                  _homeButton(context, Icons.lock_reset, 'Forgot Password', ForgotPasswordScreen(), Colors.orange[700]!, colorScheme.surface),
+                  _homeButton(context, Icons.settings, 'Settings', SettingsScreen(), Colors.blueGrey, colorScheme.surface),
+                  _homeButton(context, Icons.directions_bike, 'Manage Vehicle', ManageVehicleScreen(), Colors.teal, colorScheme.surface),
+                  _homeButton(context, Icons.upload_file, 'Upload Documents', UploadDocumentsScreen(), Colors.purple, colorScheme.surface),
+                  _homeButton(context, Icons.track_changes, 'Order Tracking', OrderTrackingScreen(), Colors.lightBlue, colorScheme.surface),
+                  _homeButton(context, Icons.list_alt, 'My Orders', MyOrdersScreen(), Colors.green, colorScheme.surface),
+                  _homeButton(context, Icons.edit, 'Signature', SignatureScreen(), Colors.deepPurple, colorScheme.surface),
                 ],
               ),
             ),
@@ -160,7 +166,14 @@ class HomeScreen extends StatelessWidget {
   }) {
     return ListTile(
       leading: Icon(icon, color: color),
-      title: Text(text, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+      title: Text(
+        text,
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+          color: Colors.black87,
+        ),
+      ),
       onTap: onTap,
       horizontalTitleGap: 0,
       minLeadingWidth: 32,
@@ -171,7 +184,7 @@ class HomeScreen extends StatelessWidget {
     return Card(
       color: bgColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-      elevation: 2,
+      elevation: 4,
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
         onTap: () => _goTo(context, screen),
@@ -181,17 +194,21 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
-                backgroundColor: iconColor.withOpacity(0.12),
+                backgroundColor: iconColor.withOpacity(0.16),
                 radius: 28,
                 child: Icon(icon, size: 32, color: iconColor),
               ),
               SizedBox(height: 14),
-              Text(label,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600)),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.3,
+                ),
+              ),
             ],
           ),
         ),

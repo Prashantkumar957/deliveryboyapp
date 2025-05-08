@@ -20,27 +20,33 @@ class MyOrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final primaryBlue = theme.colorScheme.primary;
+    final cardBg = theme.colorScheme.surface;
+    final accentBlue = theme.colorScheme.secondary;
+    final textColor = theme.colorScheme.onSurface;
+
     return Scaffold(
-      backgroundColor: Colors.grey[200], // Grey background
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
-        title: Text('My Orders', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.grey[200],
-        elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black),
+        title: Text('My Orders', style: TextStyle(color: Colors.white)),
+        backgroundColor: primaryBlue,
+        iconTheme: IconThemeData(color: Colors.white),
+        elevation: 2,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Tabs
             Row(
               children: [
-                _orderTab('New', true),
+                _orderTab(context, 'New', true),
                 SizedBox(width: 8),
-                _orderTab('Processing', false),
+                _orderTab(context, 'Processing', false),
                 SizedBox(width: 8),
-                _orderTab('Delivered', false),
+                _orderTab(context, 'Delivered', false),
               ],
             ),
             SizedBox(height: 16),
@@ -51,9 +57,9 @@ class MyOrdersScreen extends StatelessWidget {
                 itemBuilder: (context, idx) {
                   final order = orders[idx];
                   return Card(
-                    color: Colors.white, // White card background
+                    color: cardBg,
                     margin: EdgeInsets.only(bottom: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     elevation: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -62,16 +68,25 @@ class MyOrdersScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Text('Order # ${order['id']}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                              Text('Order #${order['id']}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: textColor)),
                               Spacer(),
-                              Text(order['date'] ?? '', style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                              Text(order['date'] ?? '',
+                                  style: TextStyle(
+                                      color: Colors.grey[600], fontSize: 15)),
                             ],
                           ),
                           SizedBox(height: 8),
-                          Text('Delivery Location: ${order['deliveryLocation']}', style: TextStyle(color: Colors.grey)),
-                          Text('Delivery time: ${order['deliveryTime']}', style: TextStyle(color: Colors.grey)),
-                          Text('Pickup location: ${order['pickupLocation']}', style: TextStyle(color: Colors.grey)),
-                          SizedBox(height: 12),
+                          _orderDetailRow(
+                              'Delivery Location:', order['deliveryLocation']!),
+                          _orderDetailRow(
+                              'Delivery time:', order['deliveryTime']!),
+                          _orderDetailRow(
+                              'Pickup location:', order['pickupLocation']!),
+                          SizedBox(height: 16),
                           Row(
                             children: [
                               Expanded(
@@ -80,8 +95,11 @@ class MyOrdersScreen extends StatelessWidget {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.green,
                                     padding: EdgeInsets.symmetric(vertical: 10),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12)),
                                   ),
-                                  child: Text('Accept', style: TextStyle(color: Colors.white)),
+                                  child: Text('Accept',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                               ),
                               SizedBox(width: 8),
@@ -91,8 +109,11 @@ class MyOrdersScreen extends StatelessWidget {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.red,
                                     padding: EdgeInsets.symmetric(vertical: 10),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12)),
                                   ),
-                                  child: Text('Reject', style: TextStyle(color: Colors.white)),
+                                  child: Text('Reject',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                               ),
                               SizedBox(width: 8),
@@ -100,10 +121,13 @@ class MyOrdersScreen extends StatelessWidget {
                                 child: OutlinedButton(
                                   onPressed: () {},
                                   style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: Colors.black),
+                                    side: BorderSide(color: primaryBlue),
                                     padding: EdgeInsets.symmetric(vertical: 10),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12)),
                                   ),
-                                  child: Text('Details', style: TextStyle(color: Colors.black)),
+                                  child: Text('Details',
+                                      style: TextStyle(color: primaryBlue)),
                                 ),
                               ),
                             ],
@@ -121,7 +145,7 @@ class MyOrdersScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 16.0, right: 8.0),
                 child: FloatingActionButton(
-                  backgroundColor: Colors.red,
+                  backgroundColor: primaryBlue,
                   onPressed: () {},
                   child: Icon(Icons.chat, color: Colors.white),
                 ),
@@ -133,10 +157,11 @@ class MyOrdersScreen extends StatelessWidget {
     );
   }
 
-  Widget _orderTab(String label, bool selected) {
+  Widget _orderTab(BuildContext context, String label, bool selected) {
+    final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: selected ? Colors.red : Colors.grey[200],
+        color: selected ? theme.colorScheme.primary : Colors.grey[200],
         borderRadius: BorderRadius.circular(24),
       ),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -145,6 +170,30 @@ class MyOrdersScreen extends StatelessWidget {
         style: TextStyle(
           color: selected ? Colors.white : Colors.black,
           fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  Widget _orderDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0),
+      child: RichText(
+        text: TextSpan(
+          text: '$label ',
+          style: TextStyle(
+            color: Colors.grey[600],
+            fontWeight: FontWeight.w500,
+          ),
+          children: [
+            TextSpan(
+              text: value,
+              style: TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ],
         ),
       ),
     );

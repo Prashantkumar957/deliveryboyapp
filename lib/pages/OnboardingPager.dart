@@ -1,6 +1,6 @@
-import 'package:deliveryboyapp/pages/HomeScreen.dart';
 import 'package:flutter/material.dart';
-import 'LoginScreen.dart'; // Adjust import as per your folder structure
+import 'LoginScreen.dart';
+import 'HomeScreen.dart';
 
 class OnboardingPager extends StatefulWidget {
   @override
@@ -16,30 +16,34 @@ class _OnboardingPagerState extends State<OnboardingPager> {
       'title': 'Manage Orders',
       'description':
       'Easily manage all your orders, track their status, and stay organized from pickup to delivery.',
-      'image': 'assets/images/onb_orders.png', // Use a relevant illustration
+      'image': 'assets/dob.png',
     },
     {
       'title': 'Secure Delivery',
       'description':
       'Your packages are delivered safely and securely, with real-time updates and proof of delivery.',
-      'image': 'assets/images/onb_secure.png', // Use a relevant illustration
+      'image': 'assets/doob.png',
     },
     {
       'title': 'Track in Real Time',
       'description':
       'Follow your order’s journey live on the map and communicate directly with your driver.',
-      'image': 'assets/images/onb_tracking.png', // Use a relevant illustration
+      'image': 'assets/dobb.png',
     },
   ];
 
   @override
   Widget build(BuildContext context) {
-    final Color primaryRed = Color(0xFFCC313D);
-    final Color accentTeal = Color(0xFFA7BEAE);
-    final Color cardBg = Color(0xFFF7F7FA);
+    final Color primaryBlue = Color(0xFF1976D2);
+    final Color accentBlue = Color(0xFF64B5F6);
+    final Color bgColor = Colors.white;
+    final Color textColor = Colors.black87;
+    final Color buttonColor = primaryBlue;
+    final Color indicatorActive = primaryBlue;
+    final Color indicatorInactive = accentBlue.withOpacity(0.3);
 
     return Scaffold(
-      backgroundColor: cardBg,
+      backgroundColor: bgColor,
       body: Stack(
         children: [
           PageView.builder(
@@ -58,7 +62,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                     borderRadius: BorderRadius.circular(32),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black12,
+                        color: Colors.black.withOpacity(0.08),
                         blurRadius: 20,
                         offset: Offset(0, 8),
                       ),
@@ -73,7 +77,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                           Text(
                             "Welcome to QuickMove",
                             style: TextStyle(
-                              color: accentTeal,
+                              color: accentBlue,
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
                               letterSpacing: 1.1,
@@ -83,7 +87,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                           Text(
                             data['title'],
                             style: TextStyle(
-                              color: primaryRed,
+                              color: primaryBlue,
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 0.5,
@@ -94,7 +98,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                             data['description'],
                             style: TextStyle(
                               fontSize: 15,
-                              color: Colors.grey[800],
+                              color: textColor,
                               height: 1.5,
                             ),
                           ),
@@ -102,8 +106,8 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                       ),
                       Image.asset(
                         data['image'],
-                        height: 260,
-                        fit: BoxFit.contain,
+                        height: 460,
+                        fit: BoxFit.cover,
                       ),
                     ],
                   ),
@@ -119,7 +123,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: _buildPageIndicator(primaryRed, accentTeal),
+                  children: _buildPageIndicator(indicatorActive, indicatorInactive),
                 ),
                 SizedBox(height: 18),
                 SizedBox(
@@ -139,7 +143,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryRed,
+                      backgroundColor: buttonColor,
                       padding: EdgeInsets.symmetric(vertical: 16.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(32),
@@ -174,13 +178,13 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(32),
                       ),
-                      side: BorderSide(color: accentTeal, width: 1.5),
+                      side: BorderSide(color: accentBlue, width: 1.5),
                     ),
                     child: Text(
                       'Skip',
                       style: TextStyle(
                         fontSize: 18.0,
-                        color: accentTeal,
+                        color: accentBlue,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
                       ),
@@ -195,23 +199,23 @@ class _OnboardingPagerState extends State<OnboardingPager> {
     );
   }
 
-  Widget _indicator(bool isActive, Color primaryRed, Color accentTeal) {
+  Widget _indicator(bool isActive, Color activeColor, Color inactiveColor) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
       margin: EdgeInsets.symmetric(horizontal: 5.0),
       height: 8.0,
       width: isActive ? 28.0 : 10.0,
       decoration: BoxDecoration(
-        color: isActive ? primaryRed : accentTeal.withOpacity(0.25),
+        color: isActive ? activeColor : inactiveColor,
         borderRadius: BorderRadius.circular(12.0),
       ),
     );
   }
 
-  List<Widget> _buildPageIndicator(Color primaryRed, Color accentTeal) {
+  List<Widget> _buildPageIndicator(Color activeColor, Color inactiveColor) {
     return List<Widget>.generate(
       onboardingData.length,
-          (index) => _indicator(_currentPage == index, primaryRed, accentTeal),
+          (index) => _indicator(_currentPage == index, activeColor, inactiveColor),
     );
   }
 }
