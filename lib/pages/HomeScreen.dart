@@ -1,4 +1,5 @@
 import 'package:deliveryboyapp/pages/ChatScreen.dart';
+import 'package:deliveryboyapp/pages/DashboardScreen.dart';
 import 'package:deliveryboyapp/pages/EditProfileForm.dart';
 import 'package:deliveryboyapp/pages/EditVehicleForm.dart';
 import 'package:deliveryboyapp/pages/OnboardingPager.dart';
@@ -133,12 +134,12 @@ class HomeScreen extends StatelessWidget {
                 mainAxisSpacing: 20,
                 crossAxisSpacing: 20,
                 children: [
-                  // Add these to your GridView.count's children array
-                  _homeButton(context, Icons.edit, 'Edit Profile', EditProfileForm(), Colors.blue, colorScheme.surface),
-                  _homeButton(context, Icons.two_wheeler, 'Edit Vehicle', EditVehicleForm(), Colors.teal, colorScheme.surface),
+                  _homeButton(context, Icons.dashboard, 'Dashboard', DashboardScreen(), Colors.blue, colorScheme.surface),
+
                   _homeButton(context, Icons.chat, 'Chat', ChatScreen(), Colors.purple, colorScheme.surface),
                   _homeButton(context, Icons.tour, 'Onboarding', OnboardingPager(), Colors.indigo, colorScheme.surface),
-
+                  _homeButton(context, Icons.edit, 'Edit Profile', EditProfileForm(), Colors.blue, colorScheme.surface),
+                  _homeButton(context, Icons.two_wheeler, 'Edit Vehicle', EditVehicleForm(), Colors.teal, colorScheme.surface),
                   _homeButton(context, Icons.receipt_long, 'Order Detail', OrderDetailScreen(), colorScheme.primary, colorScheme.surface),
                   _homeButton(context, Icons.login, 'Login', LoginScreen(), accentBlue, colorScheme.surface),
                   _homeButton(context, Icons.history, 'History', HistoryScreen(), Colors.indigo, colorScheme.surface),

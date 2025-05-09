@@ -7,20 +7,30 @@ class EditVehicleForm extends StatefulWidget {
 
 class _EditVehicleFormState extends State<EditVehicleForm> {
   final _formKey = GlobalKey<FormState>();
-  String type = 'Bike';
+  String? type = 'Bike';
+  String customType = '';
   String manufacturer = 'Yamaha';
   String model = 'YB 125Z';
   String year = '2018';
   String license = 'AHF-062';
   String color = 'Red';
 
+  final List<String> vehicleTypes = [
+    'Bike',
+    'Scooter',
+    'Car',
+    'Van',
+    'Truck',
+    'Other',
+  ];
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final primaryBlue = theme.colorScheme.primary;
-    final accentBlue = theme.colorScheme.secondary;
     final cardBg = theme.colorScheme.surface;
     final bgColor = theme.colorScheme.background;
+    final greyText = Colors.grey[700];
 
     return Scaffold(
       appBar: AppBar(
@@ -43,10 +53,11 @@ class _EditVehicleFormState extends State<EditVehicleForm> {
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  TextFormField(
-                    initialValue: type,
+                  DropdownButtonFormField<String>(
+                    value: type,
                     decoration: InputDecoration(
                       labelText: 'Vehicle Type',
+                      labelStyle: TextStyle(color: greyText),
                       prefixIcon: Icon(Icons.two_wheeler, color: primaryBlue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -61,14 +72,57 @@ class _EditVehicleFormState extends State<EditVehicleForm> {
                         borderSide: BorderSide(color: primaryBlue),
                       ),
                     ),
-                    validator: (value) => value == null || value.isEmpty ? 'Enter vehicle type' : null,
-                    onSaved: (value) => type = value!,
+                    icon: Icon(Icons.keyboard_arrow_down, color: primaryBlue),
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+                    items: vehicleTypes
+                        .map((v) => DropdownMenuItem(
+                      value: v,
+                      child: Text(v),
+                    ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        type = value;
+                        if (value != 'Other') customType = '';
+                      });
+                    },
+                    validator: (value) => value == null || value.isEmpty ? 'Select vehicle type' : null,
                   ),
+                  if (type == 'Other') ...[
+                    SizedBox(height: 16),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Enter Vehicle Type',
+                        labelStyle: TextStyle(color: greyText),
+                        prefixIcon: Icon(Icons.directions_car, color: primaryBlue),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: primaryBlue),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (type == 'Other' && (value == null || value.isEmpty)) {
+                          return 'Please enter vehicle type';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) => customType = value,
+                    ),
+                  ],
                   SizedBox(height: 16),
                   TextFormField(
                     initialValue: manufacturer,
                     decoration: InputDecoration(
                       labelText: 'Manufacturer',
+                      labelStyle: TextStyle(color: greyText),
                       prefixIcon: Icon(Icons.precision_manufacturing, color: primaryBlue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -91,6 +145,7 @@ class _EditVehicleFormState extends State<EditVehicleForm> {
                     initialValue: model,
                     decoration: InputDecoration(
                       labelText: 'Model',
+                      labelStyle: TextStyle(color: greyText),
                       prefixIcon: Icon(Icons.confirmation_number, color: primaryBlue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -113,6 +168,7 @@ class _EditVehicleFormState extends State<EditVehicleForm> {
                     initialValue: year,
                     decoration: InputDecoration(
                       labelText: 'Year',
+                      labelStyle: TextStyle(color: greyText),
                       prefixIcon: Icon(Icons.calendar_today, color: primaryBlue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -136,6 +192,7 @@ class _EditVehicleFormState extends State<EditVehicleForm> {
                     initialValue: license,
                     decoration: InputDecoration(
                       labelText: 'License Plate',
+                      labelStyle: TextStyle(color: greyText),
                       prefixIcon: Icon(Icons.credit_card, color: primaryBlue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -158,6 +215,7 @@ class _EditVehicleFormState extends State<EditVehicleForm> {
                     initialValue: color,
                     decoration: InputDecoration(
                       labelText: 'Color',
+                      labelStyle: TextStyle(color: greyText),
                       prefixIcon: Icon(Icons.color_lens, color: primaryBlue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -180,9 +238,10 @@ class _EditVehicleFormState extends State<EditVehicleForm> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
+                        String vehicleTypeToSave = type == 'Other' ? customType : type!;
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Vehicle details updated!')),
+                          SnackBar(content: Text('Vehicle details updated! ($vehicleTypeToSave)')),
                         );
                       }
                     },
