@@ -1,19 +1,21 @@
+import 'package:deliveryboyapp/features/profile/%20screens/DeliveryBoyFormScreen.dart';
+import 'package:deliveryboyapp/features/profile/%20screens/DeliveryBoyListScreen.dart';
 import 'package:deliveryboyapp/pages/ChatScreen.dart';
-import 'package:deliveryboyapp/pages/DashboardScreen.dart';
-import 'package:deliveryboyapp/pages/EditProfileForm.dart';
-import 'package:deliveryboyapp/pages/EditVehicleForm.dart';
-import 'package:deliveryboyapp/pages/OnboardingPager.dart';
+import 'package:deliveryboyapp/dashboard/%20screens/DashboardScreen.dart';
+import 'package:deliveryboyapp/features/profile/%20screens/EditProfileForm.dart';
+import 'package:deliveryboyapp/features/vehicle/EditVehicleForm.dart';
+import 'package:deliveryboyapp/features/profile/%20screens/OnboardingPager.dart';
 import 'package:flutter/material.dart';
-import 'ForgotPasswordScreen.dart';
-import 'History.dart';
-import 'LoginScreen.dart';
-import 'ManageVehicleScreen.dart';
-import 'MyOrdersScreen.dart';
-import 'OrderDetailScreen.dart';
-import 'OrderTrackingScreen.dart';
-import 'Setting.dart';
-import 'signature.dart';
-import 'Upload Documents Screen.dart';
+import '../../features/auth/ForgotPasswordScreen.dart';
+import '../../pages/History.dart';
+import '../../features/auth/LoginScreen.dart';
+import '../../features/vehicle/ManageVehicleScreen.dart';
+import '../../features/orders/MyOrdersScreen.dart';
+import '../../features/orders/OrderDetailScreen.dart';
+import '../../features/orders/OrderTrackingScreen.dart';
+import '../../features/profile/ screens/Setting.dart';
+import '../../features/vehicle/signature.dart';
+import '../../features/profile/ screens/Upload Documents Screen.dart';
 
 class HomeScreen extends StatelessWidget {
   void _goTo(BuildContext context, Widget screen) {
@@ -134,6 +136,9 @@ class HomeScreen extends StatelessWidget {
                 mainAxisSpacing: 20,
                 crossAxisSpacing: 20,
                 children: [
+                  _homeButton(context, Icons.delivery_dining, 'DeliveryBoy Form ', DeliveryBoyFormScreen(), Colors.purple, colorScheme.surface),
+                  _homeButton(context, Icons.people, 'All Delivery Boy', DeliveryBoyListScreen(), Colors.purple, colorScheme.surface),
+
                   _homeButton(context, Icons.dashboard, 'Dashboard', DashboardScreen(), Colors.blue, colorScheme.surface),
 
                   _homeButton(context, Icons.chat, 'Chat', ChatScreen(), Colors.purple, colorScheme.surface),

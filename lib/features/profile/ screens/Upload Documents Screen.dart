@@ -1,5 +1,5 @@
-import 'package:deliveryboyapp/pages/ManageVehicleScreen.dart';
-import 'package:deliveryboyapp/pages/signature.dart';
+import 'package:deliveryboyapp/features/vehicle/ManageVehicleScreen.dart';
+import 'package:deliveryboyapp/features/vehicle/signature.dart';
 import 'package:flutter/material.dart';
 
 class UploadDocumentsScreen extends StatelessWidget {
