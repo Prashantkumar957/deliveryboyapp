@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class EditProfileForm extends StatefulWidget {
   @override
@@ -11,20 +13,30 @@ class _EditProfileFormState extends State<EditProfileForm> {
   String phone = '+91 321-412-0144';
   String email = 'rahul@gmai.com';
   String city = 'Brooklyn';
+  File? _profileImage;
+
+  Future<void> _pickImage() async {
+    final picked = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 85);
+    if (picked != null) {
+      setState(() {
+        _profileImage = File(picked.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final primaryBlue = theme.colorScheme.primary;
-    final accentBlue = theme.colorScheme.secondary;
-    final cardBg = theme.colorScheme.surface;
-    final bgColor = theme.colorScheme.background;
+    final pureBlack = Colors.black;
+    final pureWhite = Colors.white;
+    final cardBg = pureWhite;
+    final bgColor = Colors.grey[50];
+    final greyText = Colors.grey[700];
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile', style: TextStyle(color: Colors.white)),
-        backgroundColor: primaryBlue,
-        iconTheme: IconThemeData(color: Colors.white),
+        title: Text('Edit Profile', style: TextStyle(color: pureWhite)),
+        backgroundColor: pureBlack,
+        iconTheme: IconThemeData(color: pureWhite),
         elevation: 2,
       ),
       backgroundColor: bgColor,
@@ -41,11 +53,39 @@ class _EditProfileFormState extends State<EditProfileForm> {
               child: ListView(
                 shrinkWrap: true,
                 children: [
+                  Center(
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        CircleAvatar(
+                          radius: 48,
+                          backgroundColor: Colors.grey[200],
+                          backgroundImage: _profileImage != null
+                              ? FileImage(_profileImage!)
+                              : AssetImage('assets/dek.jpeg') as ImageProvider,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 4,
+                          child: InkWell(
+                            onTap: _pickImage,
+                            child: CircleAvatar(
+                              radius: 18,
+                              backgroundColor: pureBlack,
+                              child: Icon(Icons.camera_alt, color: pureWhite, size: 20),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 28),
                   TextFormField(
                     initialValue: name,
                     decoration: InputDecoration(
                       labelText: 'Name',
-                      prefixIcon: Icon(Icons.person, color: primaryBlue),
+                      labelStyle: TextStyle(color: greyText),
+                      prefixIcon: Icon(Icons.person, color: pureBlack),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(color: Colors.grey.shade300),
@@ -56,7 +96,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: primaryBlue),
+                        borderSide: BorderSide(color: pureBlack),
                       ),
                     ),
                     validator: (value) => value == null || value.isEmpty ? 'Enter your name' : null,
@@ -67,7 +107,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                     initialValue: phone,
                     decoration: InputDecoration(
                       labelText: 'Phone Number',
-                      prefixIcon: Icon(Icons.phone, color: primaryBlue),
+                      labelStyle: TextStyle(color: greyText),
+                      prefixIcon: Icon(Icons.phone, color: pureBlack),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(color: Colors.grey.shade300),
@@ -78,7 +119,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: primaryBlue),
+                        borderSide: BorderSide(color: pureBlack),
                       ),
                     ),
                     keyboardType: TextInputType.phone,
@@ -90,7 +131,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                     initialValue: email,
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      prefixIcon: Icon(Icons.email, color: primaryBlue),
+                      labelStyle: TextStyle(color: greyText),
+                      prefixIcon: Icon(Icons.email, color: pureBlack),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(color: Colors.grey.shade300),
@@ -101,7 +143,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: primaryBlue),
+                        borderSide: BorderSide(color: pureBlack),
                       ),
                     ),
                     keyboardType: TextInputType.emailAddress,
@@ -113,7 +155,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                     initialValue: city,
                     decoration: InputDecoration(
                       labelText: 'City',
-                      prefixIcon: Icon(Icons.location_city, color: primaryBlue),
+                      labelStyle: TextStyle(color: greyText),
+                      prefixIcon: Icon(Icons.location_city, color: pureBlack),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(color: Colors.grey.shade300),
@@ -124,7 +167,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: primaryBlue),
+                        borderSide: BorderSide(color: pureBlack),
                       ),
                     ),
                     validator: (value) => value == null || value.isEmpty ? 'Enter city' : null,
@@ -142,11 +185,11 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryBlue,
+                      backgroundColor: pureBlack,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       padding: EdgeInsets.symmetric(vertical: 16),
                     ),
-                    child: Text('Save', style: TextStyle(fontSize: 16, color: Colors.white)),
+                    child: Text('Save', style: TextStyle(fontSize: 16, color: pureWhite)),
                   ),
                 ],
               ),

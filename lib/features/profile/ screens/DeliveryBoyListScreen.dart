@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'DeliveryBoyFormScreen.dart';
+
 class DeliveryBoyListScreen extends StatefulWidget {
   final Map<String, dynamic>? newDeliveryBoy;
 
@@ -17,6 +18,7 @@ class _DeliveryBoyListScreenState extends State<DeliveryBoyListScreen> {
       'location': 'New Delhi',
       'commissionType': 'Flat',
       'commission': '100',
+      // 'image': 'assets/harshit.png', // Optional: add image path if available
     },
     {
       'name': 'Rahul',
@@ -34,60 +36,51 @@ class _DeliveryBoyListScreenState extends State<DeliveryBoyListScreen> {
     },
   ];
 
-  // Filter variables
   String? locationFilter;
   String? commissionTypeFilter;
-
-  // Search query
   String searchQuery = '';
 
-  // List of unique locations for filter
-  List<String> get locations => deliveryBoys.map((e) => e['location'] as String).toSet().toList();
+  List<String> get locations =>
+      deliveryBoys.map((e) => e['location'] as String).toSet().toList();
 
   @override
   void initState() {
     super.initState();
-    // Add new delivery boy if provided
     if (widget.newDeliveryBoy != null) {
       deliveryBoys.add(widget.newDeliveryBoy!);
     }
   }
 
-  // Filter delivery boys based on current filters
   List<Map<String, dynamic>> get filteredDeliveryBoys {
     return deliveryBoys.where((boy) {
-      // Apply location filter
       if (locationFilter != null && boy['location'] != locationFilter) {
         return false;
       }
-
-      // Apply commission type filter
-      if (commissionTypeFilter != null && boy['commissionType'] != commissionTypeFilter) {
+      if (commissionTypeFilter != null &&
+          boy['commissionType'] != commissionTypeFilter) {
         return false;
       }
-
-      // Apply search filter
       if (searchQuery.isNotEmpty &&
           !boy['name'].toLowerCase().contains(searchQuery.toLowerCase()) &&
           !boy['mobile'].toLowerCase().contains(searchQuery.toLowerCase())) {
         return false;
       }
-
       return true;
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final primaryBlue = theme.primaryColor;
-    final cardBg = Colors.white;
+    final pureBlack = Colors.black;
+    final pureWhite = Colors.white;
+    final cardBg = pureWhite;
     final bgColor = Colors.grey[50];
+    final greyText = Colors.grey[700];
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Delivery Boys', style: TextStyle(color: Colors.white)),
-        backgroundColor: primaryBlue,
+        title: Text('Delivery Boys', style: TextStyle(color: pureWhite)),
+        backgroundColor: pureBlack,
         elevation: 2,
         actions: [
           IconButton(
@@ -107,37 +100,46 @@ class _DeliveryBoyListScreenState extends State<DeliveryBoyListScreen> {
           // Search bar
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search by name or mobile',
-                prefixIcon: Icon(Icons.search, color: primaryBlue),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+            child: Material(
+              elevation: 1,
+              borderRadius: BorderRadius.circular(12),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search by name or mobile',
+                  prefixIcon: Icon(Icons.search, color: pureBlack),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: pureWhite,
+                  contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: primaryBlue),
-                ),
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value;
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  searchQuery = value;
-                });
-              },
             ),
           ),
 
           // Filter section
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4),
             child: Row(
               children: [
-                Text('Filter by: ', style: TextStyle(color: Colors.grey[700])),
+                Text('Filter:', style: TextStyle(color: greyText, fontWeight: FontWeight.w600)),
                 SizedBox(width: 8),
-
                 // Location filter
                 Expanded(
-                  child: DropdownButton<String?>(
+                  child: DropdownButtonFormField<String?>(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: pureWhite,
+                      contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                    ),
                     hint: Text('Location'),
                     value: locationFilter,
                     isExpanded: true,
@@ -158,11 +160,16 @@ class _DeliveryBoyListScreenState extends State<DeliveryBoyListScreen> {
                     },
                   ),
                 ),
-                SizedBox(width: 16),
-
+                SizedBox(width: 12),
                 // Commission type filter
                 Expanded(
-                  child: DropdownButton<String?>(
+                  child: DropdownButtonFormField<String?>(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: pureWhite,
+                      contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                    ),
                     hint: Text('Commission'),
                     value: commissionTypeFilter,
                     isExpanded: true,
@@ -225,16 +232,17 @@ class _DeliveryBoyListScreenState extends State<DeliveryBoyListScreen> {
           // Delivery boys list
           Expanded(
             child: filteredDeliveryBoys.isEmpty
-                ? Center(child: Text('No delivery boys found'))
+                ? Center(child: Text('No delivery boys found', style: TextStyle(color: greyText)))
                 : ListView.builder(
               itemCount: filteredDeliveryBoys.length,
               padding: EdgeInsets.all(16),
               itemBuilder: (context, index) {
                 final boy = filteredDeliveryBoys[index];
                 return Card(
-                  elevation: 2,
+                  color: cardBg,
+                  elevation: 3,
                   margin: EdgeInsets.only(bottom: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -242,13 +250,20 @@ class _DeliveryBoyListScreenState extends State<DeliveryBoyListScreen> {
                       children: [
                         Row(
                           children: [
-                            CircleAvatar(
-                              backgroundColor: primaryBlue.withOpacity(0.1),
-                              child: Text(
-                                boy['name'].substring(0, 1),
-                                style: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold),
+                            if (boy['image'] != null && boy['image'].toString().isNotEmpty)
+                              CircleAvatar(
+                                backgroundImage: AssetImage(boy['image']),
+                                radius: 22,
+                              )
+                            else
+                              CircleAvatar(
+                                backgroundColor: pureBlack.withOpacity(0.08),
+                                radius: 22,
+                                child: Text(
+                                  boy['name'].substring(0, 1),
+                                  style: TextStyle(color: pureBlack, fontWeight: FontWeight.bold, fontSize: 20),
+                                ),
                               ),
-                            ),
                             SizedBox(width: 12),
                             Expanded(
                               child: Column(
@@ -256,11 +271,11 @@ class _DeliveryBoyListScreenState extends State<DeliveryBoyListScreen> {
                                 children: [
                                   Text(
                                     boy['name'],
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: pureBlack),
                                   ),
                                   Text(
                                     boy['mobile'],
-                                    style: TextStyle(color: Colors.grey[600]),
+                                    style: TextStyle(color: greyText),
                                   ),
                                 ],
                               ),
@@ -269,8 +284,8 @@ class _DeliveryBoyListScreenState extends State<DeliveryBoyListScreen> {
                               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
                                 color: boy['commissionType'] == 'Flat'
-                                    ? Colors.blue[50]
-                                    : Colors.green[50],
+                                    ? Colors.grey[200]
+                                    : Colors.grey[300],
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
@@ -278,9 +293,7 @@ class _DeliveryBoyListScreenState extends State<DeliveryBoyListScreen> {
                                     ? '₹${boy['commission']}'
                                     : '${boy['commission']}%',
                                 style: TextStyle(
-                                  color: boy['commissionType'] == 'Flat'
-                                      ? Colors.blue[700]
-                                      : Colors.green[700],
+                                  color: pureBlack,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -290,61 +303,113 @@ class _DeliveryBoyListScreenState extends State<DeliveryBoyListScreen> {
                         SizedBox(height: 12),
                         Row(
                           children: [
-                            Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
+                            Icon(Icons.location_on, size: 16, color: greyText),
                             SizedBox(width: 4),
                             Text(
                               boy['location'],
-                              style: TextStyle(color: Colors.grey[600]),
+                              style: TextStyle(color: greyText),
                             ),
                           ],
                         ),
-                        SizedBox(height: 12),
+                        SizedBox(height: 14),
                         Row(
                           children: [
                             Expanded(
                               child: OutlinedButton.icon(
-                                icon: Icon(Icons.edit, size: 18),
-                                label: Text('Edit'),
+                                icon: Icon(Icons.edit, size: 18, color: pureBlack),
+                                label: Text('Edit', style: TextStyle(color: pureBlack)),
                                 onPressed: () {
-                                  // Navigate to edit screen (reuse form)
+                                  // Implement edit navigation
                                 },
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: primaryBlue,
+                                  foregroundColor: pureBlack,
+                                  side: BorderSide(color: pureBlack),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                 ),
                               ),
                             ),
                             SizedBox(width: 12),
                             Expanded(
                               child: OutlinedButton.icon(
-                                icon: Icon(Icons.delete, size: 18),
-                                label: Text('Delete'),
+                                icon: Icon(Icons.delete, size: 18, color: Colors.red[700]),
+                                label: Text('Delete', style: TextStyle(color: Colors.red[700])),
                                 onPressed: () {
-                                  // Show delete confirmation
                                   showDialog(
                                     context: context,
-                                    builder: (ctx) => AlertDialog(
-                                      title: Text('Delete Delivery Boy'),
-                                      content: Text('Are you sure you want to delete ${boy['name']}?'),
-                                      actions: [
-                                        TextButton(
-                                          child: Text('Cancel'),
-                                          onPressed: () => Navigator.pop(ctx),
+                                    builder: (ctx) => Dialog(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                                      backgroundColor: Colors.white,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(Icons.warning_amber_rounded, color: Colors.red[700], size: 48),
+                                            SizedBox(height: 16),
+                                            Text(
+                                              'Are you sure?',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Text(
+                                              'Do you really want to delete ${boy['name']}?',
+                                              style: TextStyle(
+                                                color: Colors.grey[800],
+                                                fontSize: 16,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            SizedBox(height: 28),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: OutlinedButton(
+                                                    onPressed: () => Navigator.pop(ctx),
+                                                    style: OutlinedButton.styleFrom(
+                                                      foregroundColor: Colors.black,
+                                                      side: BorderSide(color: Colors.black),
+                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                      padding: EdgeInsets.symmetric(vertical: 12),
+                                                    ),
+                                                    child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold)),
+                                                  ),
+                                                ),
+                                                SizedBox(width: 16),
+                                                Expanded(
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        deliveryBoys.remove(boy);
+                                                      });
+                                                      Navigator.pop(ctx);
+                                                    },
+                                                    style: ElevatedButton.styleFrom(
+                                                      backgroundColor: Colors.black,
+                                                      foregroundColor: Colors.white,
+                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                      padding: EdgeInsets.symmetric(vertical: 12),
+                                                    ),
+                                                    child: Text('Delete', style: TextStyle(fontWeight: FontWeight.bold)),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                        TextButton(
-                                          child: Text('Delete'),
-                                          onPressed: () {
-                                            setState(() {
-                                              deliveryBoys.remove(boy);
-                                            });
-                                            Navigator.pop(ctx);
-                                          },
-                                        ),
-                                      ],
+                                      ),
                                     ),
+
+
                                   );
                                 },
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: Colors.red,
+                                  foregroundColor: Colors.red[700],
+                                  side: BorderSide(color: Colors.red[700]!),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                 ),
                               ),
                             ),
@@ -360,14 +425,14 @@ class _DeliveryBoyListScreenState extends State<DeliveryBoyListScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: primaryBlue,
+        backgroundColor: pureBlack,
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DeliveryBoyFormScreen()),
           );
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: pureWhite),
       ),
     );
   }

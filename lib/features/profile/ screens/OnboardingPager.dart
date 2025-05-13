@@ -34,8 +34,8 @@ class _OnboardingPagerState extends State<OnboardingPager> {
 
   @override
   Widget build(BuildContext context) {
-    final Color primaryBlue = Color(0xFF1976D2);
-    final Color accentBlue = Color(0xFF64B5F6);
+    final Color primaryBlue = Color(0xFF000000);
+    final Color accentBlue = Color(0xFF131313);
     final Color bgColor = Colors.white;
     final Color textColor = Colors.black87;
     final Color buttonColor = primaryBlue;
@@ -115,6 +115,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
               );
             },
           ),
+          // Replace the Positioned widget at the bottom with this:
           Positioned(
             bottom: 32,
             left: 24,
@@ -126,74 +127,77 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                   children: _buildPageIndicator(indicatorActive, indicatorInactive),
                 ),
                 SizedBox(height: 18),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_currentPage < onboardingData.length - 1) {
-                        _pageController.nextPage(
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      } else {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: buttonColor,
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Text(
-                      _currentPage < onboardingData.length - 1
-                          ? 'Continue'
-                          : 'Get Started',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        letterSpacing: 0.5,
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginScreen()),
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 10.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          side: BorderSide(color: accentBlue, width: 1.5),
+                        ),
+                        child: Text(
+                          'Skip',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: accentBlue,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_currentPage < onboardingData.length - 1) {
+                            _pageController.nextPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          } else {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomeScreen()),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: buttonColor,
+                          padding: EdgeInsets.symmetric(vertical: 10.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          elevation: 2,
+                        ),
+                        child: Text(
+                          _currentPage < onboardingData.length - 1
+                              ? 'Continue'
+                              : 'Get Started',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
                       ),
-                      side: BorderSide(color: accentBlue, width: 1.5),
                     ),
-                    child: Text(
-                      'Skip',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: accentBlue,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ),
+                  ],
                 ),
               ],
             ),
-          )
+          ),
+
         ],
       ),
     );

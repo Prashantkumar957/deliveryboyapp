@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 class OrderDetailScreen extends StatelessWidget {
   final Color backgroundColor = Colors.white;
-  final Color primaryBlue = Color(0xFF1976D2); // A deep blue
-  final Color lightBlue = Color(0xFFE3F2FD);
+  final Color primaryBlack = Colors.black;
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +12,13 @@ class OrderDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        leading: BackButton(color: primaryBlue),
+        leading: BackButton(color: primaryBlack),
         backgroundColor: backgroundColor,
         elevation: 0,
-        title: Text('Order Details', style: TextStyle(color: primaryBlue)),
+        title: Text('Order Details', style: TextStyle(color: primaryBlack)),
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert, color: primaryBlue),
+            icon: Icon(Icons.more_vert, color: primaryBlack),
             onPressed: () {},
           ),
         ],
@@ -47,25 +46,27 @@ class OrderDetailScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _circleIconButton(Icons.call, primaryBlue, () {}),
+              _circleIconButton(Icons.call, primaryBlack, () {}),
               SizedBox(width: 12),
-              _circleIconButton(Icons.message, primaryBlue, () {}),
+              _circleIconButton(Icons.message, primaryBlack, () {}),
               SizedBox(width: 12),
-              _circleIconButton(Icons.camera_alt, primaryBlue, () {}),
+              _circleIconButton(Icons.camera_alt, primaryBlack, () {}),
             ],
           ),
           SizedBox(height: 16),
+          // Action Buttons Row
           Row(
             children: [
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryBlue,
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
-                  child: Text('Accept'),
+                  child: Text('Accept', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
                 ),
               ),
               SizedBox(width: 12),
@@ -73,17 +74,31 @@ class OrderDetailScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryBlue,
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
-                  child: Text('Reject', style: TextStyle(color: Colors.white)),
+                  child: Text('Reject', style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ),
+              SizedBox(width: 12),
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: primaryBlack,
+                    side: BorderSide(color: primaryBlack),
+                    padding: EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  ),
+                  child: Text('Assign', style: TextStyle(fontWeight: FontWeight.bold, color: primaryBlack)),
                 ),
               ),
             ],
           ),
           SizedBox(height: 28),
-          _sectionTitle('Pickup Information', primaryBlue),
+          _sectionTitle('Pickup Information', primaryBlack),
           _infoRow(
             title: 'Big Bazaar, Sector 18',
             phone: '+91 98989-87654',
@@ -93,7 +108,7 @@ class OrderDetailScreen extends StatelessWidget {
             textColor: subTextColor,
           ),
           Divider(height: 32, color: Colors.grey.shade300),
-          _sectionTitle('Delivery Information', primaryBlue),
+          _sectionTitle('Delivery Information', primaryBlack),
           _infoRow(
             title: 'Ravi Kumar',
             phone: '+91 91234-56789',
@@ -110,20 +125,20 @@ class OrderDetailScreen extends StatelessWidget {
               icon: Icon(Icons.navigation, color: Colors.white),
               label: Text('Start Navigating'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: primaryBlue,
+                backgroundColor: primaryBlack,
                 padding: EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
             ),
           ),
           SizedBox(height: 24),
-          _sectionTitle('Items', primaryBlue),
+          _sectionTitle('Items', primaryBlack),
           SizedBox(height: 12),
           _itemTile('assets/rice.jpg', 'India Gate Basmati Rice', '1kg', 2, subTextColor),
           SizedBox(height: 8),
           _itemTile('assets/mango.png', 'Mango', '100g', 1, subTextColor),
           SizedBox(height: 24),
-          _sectionTitle('Note', primaryBlue),
+          _sectionTitle('Note', primaryBlack),
           SizedBox(height: 6),
           Text(
             'Please deliver between 4PM-6PM and call before arriving.',
@@ -134,7 +149,7 @@ class OrderDetailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Job Total', style: TextStyle(color: subTextColor, fontSize: 15)),
-              Text('₹3,250.00', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: primaryBlue)),
+              Text('₹3,250.00', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: primaryBlack)),
             ],
           ),
           SizedBox(height: 32),
@@ -163,7 +178,7 @@ class OrderDetailScreen extends StatelessWidget {
   Widget _circleIconButton(IconData icon, Color color, VoidCallback onTap) {
     return Ink(
       decoration: ShapeDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withOpacity(0.08),
         shape: CircleBorder(),
       ),
       child: IconButton(
@@ -194,7 +209,7 @@ class OrderDetailScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: onMapTap,
-              child: Text('Map it', style: TextStyle(color: Colors.blue)),
+              child: Text('Map it', style: TextStyle(color: Colors.black)),
             ),
           ],
         ),

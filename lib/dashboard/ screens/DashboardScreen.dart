@@ -4,16 +4,16 @@ import 'package:fl_chart/fl_chart.dart';
 class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Color primaryBlue = Color(0xFF1976D2);
-    final Color accentBlue = Color(0xFF64B5F6);
-    final Color cardBg = Colors.white;
+    final Color pureBlack = Colors.black;
+    final Color pureWhite = Colors.white;
+    final Color cardBg = pureWhite;
     final Color bg = Colors.grey[50]!;
 
     return Scaffold(
       backgroundColor: bg,
       appBar: AppBar(
-        title: Text('Dashboard', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        backgroundColor: primaryBlue,
+        title: Text('Dashboard', style: TextStyle(color: pureWhite, fontWeight: FontWeight.bold)),
+        backgroundColor: pureBlack,
         elevation: 2,
       ),
       body: ListView(
@@ -29,7 +29,7 @@ class DashboardScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Latest Order', style: TextStyle(fontWeight: FontWeight.bold, color: primaryBlue)),
+                  Text('Latest Order', style: TextStyle(fontWeight: FontWeight.bold, color: pureBlack)),
                   SizedBox(height: 8),
                   Row(
                     children: [
@@ -37,7 +37,7 @@ class DashboardScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Order #2051BW', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                            Text('Order #2051BW', style: TextStyle(fontWeight: FontWeight.bold, color: pureBlack)),
                             SizedBox(height: 2),
                             Text('Restaurant Location', style: TextStyle(color: Colors.grey[700])),
                             Text('Shop: Hotel Street, New York, New York', style: TextStyle(color: Colors.grey[600], fontSize: 13)),
@@ -47,33 +47,50 @@ class DashboardScreen extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
-                          color: accentBlue.withOpacity(0.15),
+                          color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Text('COD', style: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold)),
+                        child: Text('COD', style: TextStyle(color: pureBlack, fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
                   SizedBox(height: 10),
+                  // New Button Row
                   Row(
                     children: [
-                      OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: primaryBlue),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        ),
-                        child: Text('Details', style: TextStyle(color: primaryBlue)),
-                      ),
-                      SizedBox(width: 12),
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: primaryBlue,
+                            backgroundColor: Colors.white,
+                            foregroundColor: pureWhite,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                           ),
-                          child: Text('Direction', style: TextStyle(color: Colors.white)),
+                          child: Text('Accept', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            foregroundColor: pureWhite,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          ),
+                          child: Text('Reject', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: pureBlack,
+                            side: BorderSide(color: pureBlack),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          ),
+                          child: Text('Assign', style: TextStyle(fontWeight: FontWeight.bold, color: pureBlack)),
                         ),
                       ),
                     ],
@@ -85,7 +102,7 @@ class DashboardScreen extends StatelessWidget {
           SizedBox(height: 18),
           // Earnings Section
           Card(
-            color: accentBlue.withOpacity(0.12),
+            color: Colors.grey[100],
             elevation: 0,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(
@@ -94,9 +111,9 @@ class DashboardScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.account_balance_wallet, color: primaryBlue, size: 36),
+                      Icon(Icons.account_balance_wallet, color: pureBlack, size: 36),
                       SizedBox(width: 12),
-                      Text('₹70.55', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: primaryBlue)),
+                      Text('₹70.55', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: pureBlack)),
                       Spacer(),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -116,22 +133,22 @@ class DashboardScreen extends StatelessWidget {
           // Order Stats Section
           Row(
             children: [
-              _dashboardStatCard('55', 'Todays Orders', primaryBlue),
+              _dashboardStatCard('55', 'Todays Orders', pureBlack),
               SizedBox(width: 12),
-              _dashboardStatCard('05', 'This Week Orders', accentBlue),
+              _dashboardStatCard('05', 'This Week Orders', Colors.grey[800]!),
             ],
           ),
           SizedBox(height: 12),
           Row(
             children: [
-              _dashboardStatCard('35', 'Total Orders', Colors.blueGrey),
+              _dashboardStatCard('35', 'Total Orders', Colors.grey[600]!),
               SizedBox(width: 12),
-              _dashboardStatCard('₹75', 'Cash In Hand', Colors.teal),
+              _dashboardStatCard('₹75', 'Cash In Hand', Colors.grey[900]!),
             ],
           ),
           SizedBox(height: 24),
           // Sales Chart Section
-          Text('Sales Overview', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: primaryBlue)),
+          Text('Sales Overview', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: pureBlack)),
           SizedBox(height: 12),
           Container(
             padding: EdgeInsets.all(12),
@@ -153,7 +170,7 @@ class DashboardScreen extends StatelessWidget {
   Widget _dashboardStatCard(String value, String label, Color color) {
     return Expanded(
       child: Card(
-        color: color.withOpacity(0.12),
+        color: color.withOpacity(0.07),
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Padding(
@@ -197,7 +214,7 @@ class SalesChartWidget extends StatelessWidget {
                     getTitlesWidget: (value, meta) {
                       int idx = value.toInt();
                       return idx >= 0 && idx < months.length
-                          ? Text(months[idx], style: TextStyle(fontSize: 10))
+                          ? Text(months[idx], style: TextStyle(fontSize: 10, color: Colors.black))
                           : Text('');
                     },
                   ),
@@ -212,7 +229,7 @@ class SalesChartWidget extends StatelessWidget {
                   barRods: [
                     BarChartRodData(
                       toY: monthlySales[i].toDouble(),
-                      color: Color(0xFF1976D2),
+                      color: Colors.black,
                       width: 12,
                       borderRadius: BorderRadius.circular(4),
                     ),
@@ -242,7 +259,7 @@ class SalesChartWidget extends StatelessWidget {
                       const weeks = ['W1', 'W2', 'W3', 'W4'];
                       int idx = value.toInt();
                       return idx >= 0 && idx < weeks.length
-                          ? Text(weeks[idx], style: TextStyle(fontSize: 10))
+                          ? Text(weeks[idx], style: TextStyle(fontSize: 10, color: Colors.black))
                           : Text('');
                     },
                   ),
@@ -258,7 +275,7 @@ class SalesChartWidget extends StatelessWidget {
                 LineChartBarData(
                   spots: List.generate(weeklySales.length, (i) => FlSpot(i.toDouble(), weeklySales[i].toDouble())),
                   isCurved: true,
-                  color: Color(0xFF1976D2),
+                  color: Colors.black,
                   barWidth: 3,
                   dotData: FlDotData(show: true),
                 ),

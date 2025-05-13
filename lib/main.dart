@@ -1,68 +1,84 @@
 import 'package:flutter/material.dart';
 import 'dashboard/ screens/HomeScreen.dart';
-
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final Color primaryBlue = Color(0xFF1976D2); // Material blue 700
-  final Color accentBlue = Color(0xFF64B5F6);  // Material blue 300
+  // You can adjust these for shades if needed
+  final Color pureBlack = Colors.black;
+  final Color pureWhite = Colors.white;
+  final Color darkGrey = Color(0xFF222222);
+  final Color lightGrey = Color(0xFFF5F5F5);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Blue Themed App',
+      title: 'Black & White App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: primaryBlue,
-          primary: primaryBlue,
-          secondary: accentBlue,
-          background: Colors.white,
-          surface: Colors.white,
-          onPrimary: Colors.white,
-          onSecondary: Colors.white,
-          onBackground: Colors.black87,
-          onSurface: Colors.black87,
+        colorScheme: ColorScheme(
           brightness: Brightness.light,
+          primary: pureBlack,
+          onPrimary: pureWhite,
+          secondary: darkGrey,
+          onSecondary: pureWhite,
+          background: pureWhite,
+          onBackground: pureBlack,
+          surface: lightGrey,
+          onSurface: pureBlack,
+          error: Colors.red,
+          onError: pureWhite,
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: primaryBlue,
-          foregroundColor: Colors.white,
+          backgroundColor: pureBlack,
+          foregroundColor: pureWhite,
           elevation: 2,
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: pureWhite),
           titleTextStyle: TextStyle(
-            color: Colors.white,
+            color: pureWhite,
             fontSize: 22,
             fontWeight: FontWeight.bold,
             letterSpacing: 1.1,
           ),
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: primaryBlue,
-          foregroundColor: Colors.white,
+          backgroundColor: pureBlack,
+          foregroundColor: pureWhite,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: primaryBlue,
-            foregroundColor: Colors.white,
+            backgroundColor: pureBlack,
+            foregroundColor: pureWhite,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             textStyle: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            foregroundColor: primaryBlue,
-            side: BorderSide(color: primaryBlue),
+            foregroundColor: pureBlack,
+            side: BorderSide(color: pureBlack),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
         ),
-        cardColor: Colors.white,
-        scaffoldBackgroundColor: Colors.white,
+        cardColor: pureWhite,
+        scaffoldBackgroundColor: pureWhite,
         textTheme: TextTheme(
-          titleLarge: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold),
+          titleLarge: TextStyle(color: pureBlack, fontWeight: FontWeight.bold),
           bodyMedium: TextStyle(color: Colors.black87),
+          bodySmall: TextStyle(color: Colors.grey[700]),
+        ),
+        iconTheme: IconThemeData(color: pureBlack),
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.grey[700]),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: pureBlack, width: 2),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey[400]!),
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       ),
       home: HomeScreen(),

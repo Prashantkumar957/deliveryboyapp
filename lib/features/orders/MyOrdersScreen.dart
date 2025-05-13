@@ -21,16 +21,15 @@ class MyOrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final primaryBlue = theme.colorScheme.primary;
+    final primaryBlack = Colors.black;
     final cardBg = theme.colorScheme.surface;
-    final accentBlue = theme.colorScheme.secondary;
     final textColor = theme.colorScheme.onSurface;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         title: Text('My Orders', style: TextStyle(color: Colors.white)),
-        backgroundColor: primaryBlue,
+        backgroundColor: primaryBlack,
         iconTheme: IconThemeData(color: Colors.white),
         elevation: 2,
       ),
@@ -86,6 +85,28 @@ class MyOrdersScreen extends StatelessWidget {
                               'Delivery time:', order['deliveryTime']!),
                           _orderDetailRow(
                               'Pickup location:', order['pickupLocation']!),
+                          SizedBox(height: 12),
+                          // Earning from this order
+                          Row(
+                            children: [
+                              Icon(Icons.currency_rupee, color: Colors.green[700], size: 20),
+                              SizedBox(width: 4),
+                              Text(
+                                'Earning from this order: ',
+                                style: TextStyle(
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                '₹20',
+                                style: TextStyle(
+                                  color: Colors.green[800],
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                           SizedBox(height: 16),
                           Row(
                             children: [
@@ -93,7 +114,7 @@ class MyOrdersScreen extends StatelessWidget {
                                 child: ElevatedButton(
                                   onPressed: () {},
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green,
+                                    backgroundColor: Colors.black,
                                     padding: EdgeInsets.symmetric(vertical: 10),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(12)),
@@ -107,13 +128,13 @@ class MyOrdersScreen extends StatelessWidget {
                                 child: ElevatedButton(
                                   onPressed: () {},
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
+                                    backgroundColor: Colors.white,
                                     padding: EdgeInsets.symmetric(vertical: 10),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(12)),
                                   ),
                                   child: Text('Reject',
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(color: Colors.black)),
                                 ),
                               ),
                               SizedBox(width: 8),
@@ -121,13 +142,13 @@ class MyOrdersScreen extends StatelessWidget {
                                 child: OutlinedButton(
                                   onPressed: () {},
                                   style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: primaryBlue),
+                                    side: BorderSide(color: primaryBlack),
                                     padding: EdgeInsets.symmetric(vertical: 10),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(12)),
                                   ),
-                                  child: Text('Details',
-                                      style: TextStyle(color: primaryBlue)),
+                                  child: Text('Assign',
+                                      style: TextStyle(color: primaryBlack, fontWeight: FontWeight.bold)),
                                 ),
                               ),
                             ],
@@ -145,7 +166,7 @@ class MyOrdersScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 16.0, right: 8.0),
                 child: FloatingActionButton(
-                  backgroundColor: primaryBlue,
+                  backgroundColor: primaryBlack,
                   onPressed: () {},
                   child: Icon(Icons.chat, color: Colors.white),
                 ),
@@ -161,7 +182,7 @@ class MyOrdersScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: selected ? theme.colorScheme.primary : Colors.grey[200],
+        color: selected ? Colors.black : Colors.grey[200],
         borderRadius: BorderRadius.circular(24),
       ),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
