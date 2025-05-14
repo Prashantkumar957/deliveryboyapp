@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'EditProfileForm.dart';
+import '../../../delivery_management/ screens/EditProfileForm.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
