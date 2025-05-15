@@ -27,6 +27,7 @@ class Product {
     this.isSelected = false,
   });
 }
+
 class MarketplaceScreen extends StatefulWidget {
   @override
   State<MarketplaceScreen> createState() => _MarketplaceScreenState();
@@ -83,8 +84,6 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
       reviews: 21,
     ),
   ];
-
-
 
   List<Product> selectedProducts = [];
   String? selectedCategory;
@@ -259,6 +258,8 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                     selectedProducts.add(product);
                                   }
                                 });
+                                // Show the dialog immediately after selection
+                                _showSelectedProductsDialog();
                               },
                             );
                           },
@@ -268,30 +269,11 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                           crossAxisCount: 2,
                           mainAxisSpacing: 12,
                           crossAxisSpacing: 12,
-                          childAspectRatio: 0.65, // Lowered for more vertical space
+                          childAspectRatio: 0.65,
                         ),
                       ),
                     ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 18, 16, 20),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {});
-                              Navigator.pop(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                              padding: EdgeInsets.symmetric(vertical: 14),
-                            ),
-                            child: Text('Done', style: TextStyle(color: Colors.white)),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Removed the bottom "Save" button
                   ],
                 );
               },
@@ -303,115 +285,107 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
     setState(() {});
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final pureBlack = Colors.black;
-    final pureWhite = Colors.white;
+  void _showSelectedProductsDialog() async {
+    if (selectedProducts.isEmpty) return;
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: pureBlack,
-        title: Text('Marketplace', style: TextStyle(color: pureWhite)),
-        elevation: 2,
-      ),
-      backgroundColor: pureWhite,
-      body: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              child: DropdownButtonFormField<String>(
-                value: null,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey[100],
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                  contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            margin: EdgeInsets.only(bottom: 20, left: 8, right: 8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 16,
+                  offset: Offset(0, -4),
                 ),
-                hint: Text('Walk In Customer'),
-                items: [
-                  DropdownMenuItem(value: null, child: Text('Walk In Customer')),
-                ],
-                onChanged: (_) {},
-              ),
+              ],
             ),
-            SizedBox(height: 18),
-            Expanded(
-              child: selectedProducts.isEmpty
-                  ? Center(
-                child: InkWell(
-                  onTap: _showProductSelectionModal,
-                  borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                    width: double.infinity,
-                    height: 250,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Center(
-                      child: Icon(Icons.add, size: 56, color: Colors.black45),
-                    ),
-                  ),
-                ),
-              )
-                  : ListView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(24, 32, 24, 28),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: selectedProducts.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
-                      childAspectRatio: 0.65,
-                    ),
-                    itemBuilder: (context, idx) {
-                      final product = selectedProducts[idx];
-                      return _buildProductCard(product, isSelected: false);
-                    },
+                  // Bell icon with notification dot
+                  Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      Icon(Icons.notifications_rounded, size: 48, color: Colors.black),
+                      Positioned(
+                        right: 2,
+                        top: 6,
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 24),
-                  Divider(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Column(
-                      children: [
-                        _summaryRow('Sub Total', _calcTotal(selectedProducts)),
-                        _summaryRow('Tax', 0),
-                        _summaryRow('Shipping Cost', 0),
-                        _summaryRow('Discount', 0),
-                        Divider(),
-                        _summaryRow('Total', _calcTotal(selectedProducts)),
-                      ],
-                    ),
+                  SizedBox(height: 18),
+                  Text(
+                    'Products Selected',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black87),
                   ),
+                  SizedBox(height: 10),
+                  Text(
+                    '${selectedProducts.length} product${selectedProducts.length > 1 ? 's' : ''} selected.',
+                    style: TextStyle(fontSize: 16, color: Colors.black87),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'You can save your selection or cancel to clear all.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                  ),
+                  SizedBox(height: 28),
                   Row(
                     children: [
                       Expanded(
                         child: OutlinedButton(
-                          onPressed: () {},
-                          child: Text('Shipping'),
+                          onPressed: () {
+                            setState(() {
+                              selectedProducts.clear();
+                            });
+                            Navigator.of(context).pop();
+                          },
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            side: BorderSide(color: Colors.black),
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Text('Cancel'),
                         ),
                       ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          child: Text('Discount'),
-                        ),
-                      ),
-                      SizedBox(width: 8),
+                      SizedBox(width: 16),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            setState(() {}); // Update the main screen
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
-                            padding: EdgeInsets.symmetric(vertical: 14),
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
-                          child: Text('Place Order', style: TextStyle(color: Colors.white)),
+                          child: Text('Save', style: TextStyle(color: Colors.white)),
                         ),
                       ),
                     ],
@@ -419,117 +393,241 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                 ],
               ),
             ),
-          ],
+          ),
+        );
+      },
+    );
+    // No need to call setState here as the dialog itself triggers a rebuild when popped.
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    final pureBlack = Colors.black;
+    final pureWhite = Colors.white;
+
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: pureBlack,
+          title: Text('Marketplace', style: TextStyle(color: pureWhite)),
+          elevation: 2,
         ),
+        backgroundColor: pureWhite,
+        body: Padding(
+        padding: const EdgeInsets.all(18.0),
+    child: Column(
+    children: [
+    Container(
+    width: double.infinity,
+    child: DropdownButtonFormField<String>(
+    value: null,
+    decoration: InputDecoration(
+    filled: true,
+    fillColor: Colors.grey[100],
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+    contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
+    ),
+    hint: Text('Walk In Customer'),
+    items: [
+    DropdownMenuItem(value: null, child: Text('Walk In Customer')),
+    ],
+    onChanged: (_) {},
+    ),
+    ),
+    SizedBox(height: 18),
+    Expanded(
+    child: selectedProducts.isEmpty
+    ? Center(
+    child: InkWell(
+    onTap: _showProductSelectionModal,
+    borderRadius: BorderRadius.circular(16),
+    child: Container(
+    width: double.infinity,
+    height: 250,
+    decoration: BoxDecoration(
+    color: Colors.grey[200],
+    borderRadius: BorderRadius.circular(16),
+    ),
+    child: Center(
+    child: Icon(Icons.add, size: 56, color: Colors.black45),
+    ),
+    ),
+    ),
+    )
+        : ListView(
+    children: [
+    GridView.builder(
+    shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
+    itemCount: selectedProducts.length,
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    mainAxisSpacing: 12,
+    crossAxisSpacing: 12,
+    childAspectRatio: 0.65,
+    ),
+    itemBuilder: (context, idx) {
+    final product = selectedProducts[idx];
+    return _buildProductCard(product, isSelected: false);
+    },
+    ),
+    SizedBox(height: 24),
+    Divider(),
+    Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: Column(
+    children: [
+    _summaryRow('Sub Total', _calcTotal(selectedProducts)),
+    _summaryRow('Tax', 0),
+    _summaryRow('Shipping Cost', 0),
+      _summaryRow('Discount', 0),
+      Divider(),
+      _summaryRow('Total', _calcTotal(selectedProducts)),
+    ],
+    ),
+    ),
+      Row(
+        children: [
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () {},
+              child: Text('Shipping'),
+            ),
+          ),
+          SizedBox(width: 8),
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () {},
+              child: Text('Discount'),
+            ),
+          ),
+          SizedBox(width: 8),
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                padding: EdgeInsets.symmetric(vertical: 14),
+              ),
+              child: Text('Place Order', style: TextStyle(color: Colors.white)),
+            ),
+          ),
+        ],
       ),
+    ],
+    ),
+    ),
+    ],
+    ),
+        ),
     );
   }
 
   Widget _buildProductCard(Product product, {bool isSelected = false, VoidCallback? onTap}) {
     return GestureDetector(
-        onTap: onTap,
-        child: SizedBox(
-        height: 300, // ✅ Set fixed height here
+      onTap: onTap,
+      child: SizedBox(
+        height: 300,
         child: Stack(
-        children: [
-        Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 8,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            padding: EdgeInsets.all(10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min, // Important for flexible content!
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    if (product.discountPercent > 0)
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: Colors.red[400],
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          '-${product.discountPercent}%',
-                          style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    Spacer(),
-                    Icon(Icons.favorite_border, color: Colors.grey[400], size: 22),
-                  ],
-                ),
-                SizedBox(height: 8),
-                AspectRatio(
-                  aspectRatio: 1.1,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(product.imageUrl, fit: BoxFit.cover),
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 8,
+                    offset: Offset(0, 2),
                   ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  product.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                ),
-                SizedBox(height: 6),
-                Row(
-                  children: [
-                    Text(
-                      '\$${product.price.toStringAsFixed(2)}',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                    ),
-                    SizedBox(width: 6),
-                    if (product.oldPrice != null)
-                      Text(
-                        '\$${product.oldPrice!.toStringAsFixed(2)}',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 13,
-                          decoration: TextDecoration.lineThrough,
+                ],
+              ),
+              padding: EdgeInsets.all(10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      if (product.discountPercent > 0)
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.red[400],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            '-${product.discountPercent}%',
+                            style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                  ],
-                ),
-                SizedBox(height: 4),
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber, size: 16),
-                    SizedBox(width: 2),
-                    Text(
-                      product.rating.toStringAsFixed(1),
-                      style: TextStyle(fontSize: 13, color: Colors.black87),
+                      Spacer(),
+                      Icon(Icons.favorite_border, color: Colors.grey[400], size: 22),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  AspectRatio(
+                    aspectRatio: 1.1,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(product.imageUrl, fit: BoxFit.cover),
                     ),
-                    SizedBox(width: 4),
-                    Text('(${product.reviews})', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          if (isSelected)
-            Positioned(
-              top: 10,
-              left: 10,
-              child: CircleAvatar(
-                radius: 13,
-                backgroundColor: Colors.black,
-                child: Icon(Icons.check, color: Colors.white, size: 16),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    product.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Text(
+                        '\$${product.price.toStringAsFixed(2)}',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
+                      SizedBox(width: 6),
+                      if (product.oldPrice != null)
+                        Text(
+                          '\$${product.oldPrice!.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(Icons.star, color: Colors.amber, size: 16),
+                      SizedBox(width: 2),
+                      Text(
+                        product.rating.toStringAsFixed(1),
+                        style: TextStyle(fontSize: 13, color: Colors.black87),
+                      ),
+                      SizedBox(width: 4),
+                      Text('(${product.reviews})', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                    ],
+                  ),
+                ],
               ),
             ),
-        ],
+            if (isSelected)
+              Positioned(
+                top: 10,
+                left: 10,
+                child: CircleAvatar(
+                  radius: 13,
+                  backgroundColor: Colors.black,
+                  child: Icon(Icons.check, color: Colors.white, size: 16),
+                ),
+              ),
+          ],
+        ),
       ),
-        )
     );
   }
 
