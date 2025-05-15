@@ -27,7 +27,6 @@ class Product {
     this.isSelected = false,
   });
 }
-
 class MarketplaceScreen extends StatefulWidget {
   @override
   State<MarketplaceScreen> createState() => _MarketplaceScreenState();
@@ -84,6 +83,8 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
       reviews: 21,
     ),
   ];
+
+
 
   List<Product> selectedProducts = [];
   String? selectedCategory;
@@ -142,72 +143,87 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                               ],
                             ),
                             SizedBox(height: 10),
-                            TextField(
-                              decoration: InputDecoration(
-                                hintText: 'Search by product name/barcode',
-                                prefixIcon: Icon(Icons.search),
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                                contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-                                isDense: true,
+                            // Search bar with shadow
+                            Material(
+                              elevation: 3,
+                              borderRadius: BorderRadius.circular(12),
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Search by product name/barcode',
+                                  prefixIcon: Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                                  isDense: true,
+                                ),
+                                onChanged: (val) {
+                                  setModalState(() => searchQuery = val);
+                                },
                               ),
-                              onChanged: (val) {
-                                setModalState(() => searchQuery = val);
-                              },
                             ),
                             SizedBox(height: 12),
+                            // Filters with shadow
                             Row(
                               children: [
                                 Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Select Category', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                                      SizedBox(height: 4),
-                                      DropdownButtonFormField<String>(
-                                        value: selectedCategory,
-                                        isExpanded: true,
-                                        decoration: InputDecoration(
-                                          hintText: 'Search',
-                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                                          isDense: true,
-                                          contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                                  child: Material(
+                                    elevation: 3,
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: DropdownButtonFormField<String>(
+                                      value: selectedCategory,
+                                      isExpanded: true,
+                                      decoration: InputDecoration(
+                                        hintText: 'Search',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none,
                                         ),
-                                        items: [
-                                          DropdownMenuItem(value: null, child: Text('All')),
-                                          ...categories.map((cat) => DropdownMenuItem(value: cat, child: Text(cat))),
-                                        ],
-                                        onChanged: (val) {
-                                          setModalState(() => selectedCategory = val);
-                                        },
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                                       ),
-                                    ],
+                                      items: [
+                                        DropdownMenuItem(value: null, child: Text('All')),
+                                        ...categories.map((cat) => DropdownMenuItem(value: cat, child: Text(cat))),
+                                      ],
+                                      onChanged: (val) {
+                                        setModalState(() => selectedCategory = val);
+                                      },
+                                    ),
                                   ),
                                 ),
                                 SizedBox(width: 10),
                                 Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Select Brand', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                                      SizedBox(height: 4),
-                                      DropdownButtonFormField<String>(
-                                        value: selectedBrand,
-                                        isExpanded: true,
-                                        decoration: InputDecoration(
-                                          hintText: 'Select',
-                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                                          isDense: true,
-                                          contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                                  child: Material(
+                                    elevation: 3,
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: DropdownButtonFormField<String>(
+                                      value: selectedBrand,
+                                      isExpanded: true,
+                                      decoration: InputDecoration(
+                                        hintText: 'Select',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none,
                                         ),
-                                        items: [
-                                          DropdownMenuItem(value: null, child: Text('All')),
-                                          ...brands.map((b) => DropdownMenuItem(value: b, child: Text(b))),
-                                        ],
-                                        onChanged: (val) {
-                                          setModalState(() => selectedBrand = val);
-                                        },
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                                       ),
-                                    ],
+                                      items: [
+                                        DropdownMenuItem(value: null, child: Text('All')),
+                                        ...brands.map((b) => DropdownMenuItem(value: b, child: Text(b))),
+                                      ],
+                                      onChanged: (val) {
+                                        setModalState(() => selectedBrand = val);
+                                      },
+                                    ),
                                   ),
                                 ),
                               ],
@@ -252,7 +268,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                           crossAxisCount: 2,
                           mainAxisSpacing: 12,
                           crossAxisSpacing: 12,
-                          childAspectRatio: 0.70,
+                          childAspectRatio: 0.65, // Lowered for more vertical space
                         ),
                       ),
                     ),
@@ -329,7 +345,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   borderRadius: BorderRadius.circular(16),
                   child: Container(
                     width: double.infinity,
-                    height: 200,
+                    height: 250,
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(16),
@@ -350,7 +366,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 12,
                       crossAxisSpacing: 12,
-                      childAspectRatio: 0.70,
+                      childAspectRatio: 0.65,
                     ),
                     itemBuilder: (context, idx) {
                       final product = selectedProducts[idx];
@@ -411,10 +427,12 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
 
   Widget _buildProductCard(Product product, {bool isSelected = false, VoidCallback? onTap}) {
     return GestureDetector(
-      onTap: onTap,
-      child: Stack(
+        onTap: onTap,
+        child: SizedBox(
+        height: 300, // ✅ Set fixed height here
+        child: Stack(
         children: [
-          Container(
+        Container(
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
@@ -428,9 +446,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
             ),
             padding: EdgeInsets.all(10),
             child: Column(
+              mainAxisSize: MainAxisSize.min, // Important for flexible content!
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Discount badge and favorite icon
                 Row(
                   children: [
                     if (product.discountPercent > 0)
@@ -458,13 +476,11 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   ),
                 ),
                 SizedBox(height: 8),
-                Flexible(
-                  child: Text(
-                    product.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                  ),
+                Text(
+                  product.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                 ),
                 SizedBox(height: 6),
                 Row(
@@ -513,6 +529,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
             ),
         ],
       ),
+        )
     );
   }
 

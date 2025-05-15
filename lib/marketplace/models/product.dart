@@ -25,4 +25,3 @@ class Product {
     this.isSelected = false,
   });
 }
-
